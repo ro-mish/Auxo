@@ -1,8 +1,8 @@
 class SpotSearch:
     
     sp = spotipy.Spotify(auth_manager = SpotifyClientCredentials(
-    client_id = "b00d2ebe0ca4457b8add1cb738e2847c",
-    client_secret = "3ef60b79dcfc470b840e3d71c43adb3e"))
+    client_id = "",
+    client_secret = ""))
     
     def __init__(self,name,genre,artist):
         
