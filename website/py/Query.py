@@ -18,7 +18,7 @@ class query:
     #@dance: float between 0-1
     #@tracks: track uri  
 
-    def __init__(self, token, user_id, market = "US",limit = 30,dance = 0.5,artist = "",track=""):
+    def __init__(self, token, user_id, market="US",limit=30,dance=0.5,artist="",track=""):
         
         self.market = market
         self.token = token
@@ -34,7 +34,10 @@ class query:
     def query_builder(self):
         query = f'{endpoint_url}limit={self.limit}&market={self.market}&target_danceability={self.target_danceability}'
         
+        print(f"Seed Artist: {self.seed_artist}")
+        
         if len(self.seed_artist) > 0:
+            
             query += f'&seed_artists={self.seed_artist}'
         
         if len(self.seed_track) > 0:    
@@ -43,21 +46,22 @@ class query:
         return query
 
     def json_response(self):
+        
         response = requests.get(self.query_builder(), 
                headers={"Content-Type":"application/json", 
                         "Authorization":f"Bearer {self.token}"})
         json_response = response.json()
-
+       
         for i,j in enumerate(json_response['tracks']):
             self.uris.append(j['uri'])
-            print(f" {i+1} ) { j['name']} by {j['artists'][0]['name']}")
+            #print(f" {i+1} ) { j['name']} by {j['artists'][0]['name']}")
 
     def request_generator(self,name = "unnamed", desc = "unnamed", is_public = False):
         
         request_body = json.dumps({
-        "name": name,
-        "description": desc,
-        "public": is_public
+            "name": name,
+            "description": desc,
+            "public": is_public
         })
 
         return request_body
@@ -78,19 +82,28 @@ class query:
     def playlist_run(self):
         
         q = self.query_builder()
+
         json_response = self.json_response()
 
-        
-        req  = self.request_generator("demop_playlist","playlist created with python",False)
+
+        req  = self.request_generator("demo_playlist","playlist created with python",False)
+        print(req)
+        print(self.playlist_id_generator(req))
         playlist_id, playlist_url = self.playlist_id_generator(req)
+        
+        print(playlist_url)
         playist_endpoint_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
 
+        
         request_body = json.dumps({
             "uris" : self.uris
             })
+        
         response = requests.post(url = endpoint_url, data = request_body, headers={"Content-Type":"application/json", 
                             "Authorization":f"Bearer {self.token}"})
-
+        
+        print(response)
+        
         if response.status_code != 201:
             print("HTTP Error")
         return playlist_url

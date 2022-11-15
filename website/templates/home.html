@@ -1,0 +1,92 @@
+{% extends "base.html" %} {% block title %}Auxo{% endblock %} 
+
+{% block content%}
+
+<style>
+    #signup {
+        background-color: #33403c;
+        color: white;
+    }
+
+    #button{
+
+
+        height: 75px;
+        width: 300px;
+    }
+
+    #body{
+        padding-left: 100px;
+        padding-right: 100px;
+        padding-top: 50px;
+        padding-bottom: 20px;
+        align: center;
+    }
+
+    img {
+        height: 50px;
+        width: 50px;
+    }
+</style>
+
+<h1 align="center">Generate Playlist Using Auxo</h1>
+    
+<h3 align = "center">Use Auxo to generate a new playlist on your Spotify account based on input factors</h3><br>
+    <h5 id = "body" align = "left">
+    
+
+    1. Sign in to Spotify<br>
+
+    2. Scroll down and retrieve an OAuth Token by clicking "Get Token"<br>
+
+    3. When prompted, select "playlist-modify-private" and "playlist-modify-public"<br>
+    
+    </h5>
+
+
+
+
+
+<div align = "center" id = "body">
+    <form action="{{url_for("views.home")}}" method="post">
+
+        <label for="oauth-key">Name:</label>
+        <input type="text" id="fullname" name="name" placeholder="Full Name">
+        
+
+        <label for="name">Authentication Key:</label>
+        <input type="text" id="auth" name="auth" placeholder="OAuth">
+        <br>
+
+        <h5 id = "body">Go to your Spotify profile, and Right-click on your name, press Option and copy your Spotify URI</h5>
+        <label for="uri">URI:</label>
+        <input type="text" id="prof_uri" name="prof_uri" placeholder="Your personal URI">
+        
+        <label for="uri">Artist URI:</label>
+        <input type="text" id="artist_uri" name="artist_uri" placeholder="Input Artist URI">
+        
+        <label for="uri">Genre:</label>
+        <input type="text" id="genre" name="genre" placeholder="Input Genre">
+        
+        <label for="uri">Track URI:</label>
+        <input type="text" id="track" name="track" placeholder="Input Track URI">
+
+
+        <br>
+        <br>
+        <button type="submit" id = "button">Submit</button>
+</div>
+
+{% if show %}
+
+    <div id = "body" align="center">
+        <h2>Hello: {{fname}}</h2>
+        <h3> Your playlist is available at: {{url}}</h3>
+    </div>
+
+{% else %}
+    {{super()}}
+{% endif %}
+
+{% endblock %}
+ 
